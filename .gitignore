@@ -1,0 +1,35 @@
+# --- Node ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Environment ---
+.env
+.env.local
+.env.*.local
+
+# --- Backend ---
+backend/node_modules/
+backend/.env
+
+# --- Frontend ---
+frontend/node_modules/
+frontend/.env
+frontend/dist/
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+*.log
+
+# --- Misc ---
+*.pem
+coverage/
