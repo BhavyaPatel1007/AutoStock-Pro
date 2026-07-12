@@ -12,10 +12,10 @@ const _buildQuery = (filters, sortBy, sortOrder) => {
   if (filters.minPrice) q.gte('price', filters.minPrice);
   if (filters.maxPrice) q.lte('price', filters.maxPrice);
   if (filters.q) {
-    q.or(`make.ilike.%${filters.q}%,model.ilike.%${filters.q}%,category.ilike.%${filters.q}%`);
+    q.or(`make.ilike.*${filters.q}*,model.ilike.*${filters.q}*,category.ilike.*${filters.q}*`);
   }
   if (filters.search) {
-    q.or(`make.ilike.%${filters.search}%,model.ilike.%${filters.search}%,category.ilike.%${filters.search}%`);
+    q.or(`make.ilike.*${filters.search}*,model.ilike.*${filters.search}*,category.ilike.*${filters.search}*`);
   }
 
   const sortColumn = sortBy || 'created_at';

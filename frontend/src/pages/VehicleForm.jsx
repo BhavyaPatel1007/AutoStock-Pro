@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useOutletContext } from 'react-router-dom';
 import api from '../api/axios';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
@@ -12,6 +12,8 @@ export default function VehicleForm() {
   const { id } = useParams();
   const isEdit = Boolean(id);
   const navigate = useNavigate();
+  const outlet = useOutletContext();
+  const showToast = outlet?.showToast || (() => {});
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -52,8 +54,10 @@ export default function VehicleForm() {
     try {
       if (isEdit) {
         await api.put(`/vehicles/${id}`, payload);
+        showToast('Vehicle updated successfully!', 'success');
       } else {
         await api.post('/vehicles', payload);
+        showToast('Vehicle created successfully!', 'success');
       }
       navigate('/search');
     } catch (err) {
@@ -66,40 +70,75 @@ export default function VehicleForm() {
   if (loading) return <Loading />;
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl mx-auto space-y-6 page-transition">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{isEdit ? 'Edit Vehicle' : 'Add Vehicle'}</h1>
-        <p className="text-gray-500 mt-1">{isEdit ? 'Update vehicle details' : 'Register a new vehicle in inventory'}</p>
+        <h1 className="text-2xl font-bold text-slate-900">{isEdit ? 'Edit Vehicle' : 'Add Vehicle'}</h1>
+        <p className="text-slate-400 mt-0.5">{isEdit ? 'Update vehicle details' : 'Register a new vehicle in inventory'}</p>
       </div>
 
       <Card>
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-2.5">{error}</div>}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="flex items-center gap-2.5 bg-red-50 border border-red-200 text-red-700 text-sm rounded-2xl px-4 py-3 animate-fade-in">
+              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M15 9l-6 6M9 9l6 6" /></svg>
+              {error}
+            </div>
+          )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input label="Make *" placeholder="e.g. Toyota" value={form.make} onChange={(e) => setForm({ ...form, make: e.target.value })} />
-            <Input label="Model *" placeholder="e.g. Camry" value={form.model} onChange={(e) => setForm({ ...form, model: e.target.value })} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <Input
+              label="Make *"
+              placeholder="e.g. Toyota"
+              value={form.make}
+              onChange={(e) => setForm({ ...form, make: e.target.value })}
+            />
+            <Input
+              label="Model *"
+              placeholder="e.g. Camry"
+              value={form.model}
+              onChange={(e) => setForm({ ...form, model: e.target.value })}
+            />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Category *</label>
-            <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="input-field">
+            <label className="block text-sm font-medium text-slate-700 mb-2">Category *</label>
+            <select
+              value={form.category}
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
+              className="input-field"
+            >
               {CATEGORIES.map((c) => (
                 <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
               ))}
             </select>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input label="Price *" type="number" step="0.01" min="0" placeholder="25000" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} />
-            <Input label="Quantity" type="number" min="0" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value })} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <Input
+              label="Price *"
+              type="number"
+              step="0.01"
+              min="0"
+              placeholder="25000"
+              value={form.price}
+              onChange={(e) => setForm({ ...form, price: e.target.value })}
+            />
+            <Input
+              label="Quantity"
+              type="number"
+              min="0"
+              value={form.quantity}
+              onChange={(e) => setForm({ ...form, quantity: e.target.value })}
+            />
           </div>
 
-          <div className="flex gap-3 pt-2">
-            <Button type="submit" disabled={saving}>
+          <div className="flex gap-3 pt-2 border-t border-slate-100">
+            <Button type="submit" variant="premium" size="lg" loading={saving}>
               {saving ? 'Saving...' : isEdit ? 'Update Vehicle' : 'Create Vehicle'}
             </Button>
-            <Button type="button" variant="secondary" onClick={() => navigate(-1)}>Cancel</Button>
+            <Button type="button" variant="secondary" size="lg" onClick={() => navigate(-1)}>
+              Cancel
+            </Button>
           </div>
         </form>
       </Card>

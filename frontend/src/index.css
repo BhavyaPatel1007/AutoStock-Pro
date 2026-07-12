@@ -3,51 +3,194 @@
 @tailwind utilities;
 
 @layer base {
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    @apply min-h-screen;
-  }
+  html { scroll-behavior: smooth; }
+  body { @apply min-h-screen bg-slate-50 text-slate-900 antialiased; }
+  ::selection { @apply bg-blue-500/20 text-blue-900; }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-blue-500; }
 }
 
 @layer components {
   .sidebar-link {
-    @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors;
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200;
   }
-
   .sidebar-link-active {
-    @apply bg-blue-600/10 text-blue-400;
+    @apply bg-blue-500/10 text-blue-500 shadow-sm;
   }
-
   .sidebar-link-inactive {
-    @apply text-slate-300 hover:bg-slate-800 hover:text-white;
+    @apply text-slate-400 hover:bg-white/5 hover:text-white;
   }
 
   .stat-card {
-    @apply bg-white rounded-xl border border-gray-100 p-6 shadow-sm;
+    @apply bg-white rounded-2xl border border-slate-100 p-6 transition-all duration-300 hover:-translate-y-0.5;
+    --tw-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
-
-  .btn-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg px-4 py-2.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-
-  .btn-secondary {
-    @apply bg-white hover:bg-gray-50 text-gray-700 font-medium rounded-lg border border-gray-300 px-4 py-2.5 transition-colors;
-  }
-
-  .btn-danger {
-    @apply bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg px-4 py-2.5 transition-colors;
-  }
-
-  .input-field {
-    @apply w-full rounded-lg border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow;
+  .stat-card:hover {
+    --tw-shadow: 0 10px 25px -3px rgba(0,0,0,0.06), 0 4px 6px -2px rgba(0,0,0,0.03);
+    --tw-shadow-colored: 0 10px 25px -3px var(--tw-shadow-color), 0 4px 6px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
 
   .card {
-    @apply bg-white rounded-xl border border-gray-100 shadow-sm;
+    @apply bg-white rounded-2xl border border-slate-100;
+    --tw-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+
+  .card-hover {
+    @apply hover:-translate-y-0.5 transition-all duration-300;
+  }
+  .card-hover:hover {
+    --tw-shadow: 0 10px 25px -3px rgba(0,0,0,0.06), 0 4px 6px -2px rgba(0,0,0,0.03);
+    --tw-shadow-colored: 0 10px 25px -3px var(--tw-shadow-color), 0 4px 6px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+
+  .glass {
+    @apply bg-white/80 backdrop-blur-xl border border-white/20;
+    --tw-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 8px 32px rgba(0,0,0,0.12);
+    --tw-shadow-colored: 0 0 0 1px var(--tw-shadow-color), 0 8px 32px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+
+  .input-field {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900
+           placeholder:text-slate-400 transition-all duration-200
+           focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20
+           disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed;
+  }
+  .input-field.error {
+    @apply border-red-300 focus:border-red-500 focus:ring-red-500/20;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none
+           active:scale-[0.98] select-none;
+  }
+  .btn-primary {
+    @apply btn bg-blue-500 text-white hover:bg-blue-600;
+    --tw-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+  .btn-primary:hover {
+    --tw-shadow: 0 10px 25px -3px rgba(0,0,0,0.06), 0 4px 6px -2px rgba(0,0,0,0.03);
+    --tw-shadow-colored: 0 10px 25px -3px var(--tw-shadow-color), 0 4px 6px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+  .btn-secondary {
+    @apply btn bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 shadow-sm;
+  }
+  .btn-danger {
+    @apply btn bg-red-500 text-white hover:bg-red-600;
+    --tw-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+  .btn-ghost {
+    @apply btn text-slate-500 hover:text-slate-700 hover:bg-slate-100;
+  }
+  .btn-premium {
+    @apply btn bg-gradient-to-br from-blue-500 to-blue-700 text-white
+           hover:from-blue-600 hover:to-blue-800
+           relative overflow-hidden;
+    --tw-shadow: 0 10px 25px -3px rgba(0,0,0,0.06), 0 4px 6px -2px rgba(0,0,0,0.03);
+    --tw-shadow-colored: 0 10px 25px -3px var(--tw-shadow-color), 0 4px 6px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+  .btn-premium:hover {
+    --tw-shadow: 0 20px 40px -5px rgba(0,0,0,0.08), 0 8px 10px -5px rgba(0,0,0,0.04);
+    --tw-shadow-colored: 0 20px 40px -5px var(--tw-shadow-color), 0 8px 10px -5px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+  .btn-premium::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent
+           -translate-x-full;
+  }
+  .btn-premium:hover::before {
+    @apply translate-x-full transition-transform duration-700;
+  }
+  .btn-sm { @apply px-3 py-1.5 text-xs rounded-lg; }
+  .btn-md { @apply px-5 py-2.5 text-sm; }
+  .btn-lg { @apply px-7 py-3.5 text-base; }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  .badge-available { @apply badge bg-emerald-50 text-emerald-700 border border-emerald-200/50; }
+  .badge-low { @apply badge bg-amber-50 text-amber-700 border border-amber-200/50; }
+  .badge-sold { @apply badge bg-red-50 text-red-700 border border-red-200/50; }
+  .badge-admin { @apply badge bg-purple-50 text-purple-700 border border-purple-200/50; }
+  .badge-user { @apply badge bg-blue-50 text-blue-700 border border-blue-200/50; }
+  .badge-default { @apply badge bg-slate-100 text-slate-600 border border-slate-200/50; }
+
+  .skeleton {
+    @apply bg-gradient-to-r from-slate-100 via-slate-200 to-slate-100 bg-[length:200%_100%] rounded-xl;
+    animation: shimmer 2s infinite linear;
+  }
+
+  .toast {
+    @apply fixed bottom-6 right-6 z-[100] flex items-center gap-3 px-5 py-3.5 rounded-2xl
+           backdrop-blur-xl border;
+    --tw-shadow: 0 20px 40px -5px rgba(0,0,0,0.08), 0 8px 10px -5px rgba(0,0,0,0.04);
+    --tw-shadow-colored: 0 20px 40px -5px var(--tw-shadow-color), 0 8px 10px -5px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  .toast-success { @apply toast bg-emerald-50 border-emerald-200 text-emerald-800; }
+  .toast-error { @apply toast bg-red-50 border-red-200 text-red-800; }
+
+
+
+  .page-transition {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .nav-link {
+    @apply relative text-slate-400 hover:text-white transition-colors duration-200;
+  }
+  .nav-link::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 rounded-full transition-all duration-300;
+  }
+  .nav-link:hover::after,
+  .nav-link.active::after { @apply w-full; }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  .shadow-blue-md {
+    --tw-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -1px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+
+  .shadow-blue-lg {
+    --tw-shadow: 0 10px 25px -3px rgba(0,0,0,0.06), 0 4px 6px -2px rgba(0,0,0,0.03);
+    --tw-shadow-colored: 0 10px 25px -3px var(--tw-shadow-color), 0 4px 6px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+
+  .shadow-blue-xl {
+    --tw-shadow: 0 20px 40px -5px rgba(0,0,0,0.08), 0 8px 10px -5px rgba(0,0,0,0.04);
+    --tw-shadow-colored: 0 20px 40px -5px var(--tw-shadow-color), 0 8px 10px -5px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+
+  .shadow-blue-2xl {
+    --tw-shadow: 0 30px 60px -10px rgba(0,0,0,0.1);
+    --tw-shadow-colored: 0 30px 60px -10px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+
+  .shadow-glass {
+    --tw-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 8px 32px rgba(0,0,0,0.12);
+    --tw-shadow-colored: 0 0 0 1px var(--tw-shadow-color), 0 8px 32px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   }
 }
